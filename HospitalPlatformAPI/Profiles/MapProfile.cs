@@ -1,6 +1,7 @@
 using AutoMapper;
 using HospitalPlatformAPI.DTOs;
 using HospitalPlatformAPI.DTOs.Group;
+using HospitalPlatformAPI.DTOs.Test;
 using HospitalPlatformAPI.Models;
 
 namespace HospitalPlatformAPI.Profiles;
@@ -11,6 +12,7 @@ public class MapProfile : Profile
     {
         CreateMap<Group, GroupCreateDto>().ReverseMap();
         CreateMap<Group, GroupReturnDto>().ReverseMap();
+        CreateMap<Test, TestReturnDto>().ReverseMap();
         CreateMap<GroupCreateDto, IEnumerable<Group>>();
         CreateMap<RegisterDto, AppUser>();
         // CreateMap<SliderVM, Slider>()

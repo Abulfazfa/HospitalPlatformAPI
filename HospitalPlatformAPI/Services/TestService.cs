@@ -1,5 +1,7 @@
 using AutoMapper;
 using HospitalPlatformAPI.DTOs.Group;
+using HospitalPlatformAPI.DTOs.Test;
+using HospitalPlatformAPI.Models;
 using HospitalPlatformAPI.Repositories.Interfaces;
 using HospitalPlatformAPI.Services.Interfaces;
 
@@ -16,23 +18,23 @@ namespace HospitalPlatformAPI.Services;
         _unitOfWork = unitOfWork;
     }
 
-    public List<GroupReturnDto> GetGroups()
+    public List<TestReturnDto> GetTests()
     {
-        var groups = _unitOfWork.TestRepository.GetAllAsync().GetAwaiter().GetResult();
-        var list = new List<GroupReturnDto>();
-        foreach (var group in groups)
+        var tests = _unitOfWork.TestRepository.GetAllAsync().GetAwaiter().GetResult();
+        var list = new List<TestReturnDto>();
+        foreach (var test in tests)
         {
-           list.Add(_mapper.Map<GroupReturnDto>(group));
+           list.Add(_mapper.Map<TestReturnDto>(test));
         }
         return list;
     }
 
-    public bool AddGroup(GroupCreateDto groupCreateDto)
+    public bool AddTest(TestCreateDto testCreateDto)
     {
         try
         {
-            var group = _mapper.Map<Group>(groupCreateDto);
-            var result = _unitOfWork.GroupRepository.AddAsync(group).GetAwaiter().GetResult; 
+            var test = _mapper.Map<Test>(testCreateDto);
+            var result = _unitOfWork.TestRepository.AddAsync(test).GetAwaiter().GetResult; 
             _unitOfWork.Commit();
             return true;
         }
@@ -42,12 +44,12 @@ namespace HospitalPlatformAPI.Services;
         }
     }
 
-    public bool DeleteGroup(int id)
+    public bool DeleteTest(int id)
     {
         try
         {
-            var group = GetGroup(id);
-            var result = _unitOfWork.GroupRepository.DeleteAsync(group).GetAwaiter().GetResult; 
+            var test = GetTest(id);
+            var result = _unitOfWork.TestRepository.DeleteAsync(test).GetAwaiter().GetResult; 
             _unitOfWork.Commit();
             return true;
         }
@@ -57,32 +59,33 @@ namespace HospitalPlatformAPI.Services;
         }
     }
 
-    public GroupReturnDto GetGroupById(int id)
+    public TestReturnDto GetTestById(int id)
     {
-        var group = GetGroup(id);
-        return _mapper.Map<GroupReturnDto>(group);
+        var test = GetTest(id);
+        return _mapper.Map<TestReturnDto>(test);
     }
 
-    public bool UpdateGroup(GroupCreateDto groupCreateDto)
+    public bool UpdateTest(TestCreateDto testCreateDto)
     {
-        var groupEntity = _mapper.Map<Group>(groupCreateDto);
+        var groupEntity = _mapper.Map<Test>(testCreateDto);
         
-        var existingGroup = _unitOfWork.GroupRepository.GetByIdAsync(groupEntity.Id).Result;
+        var existingGroup = _unitOfWork.TestRepository.GetByIdAsync(groupEntity.Id).Result;
 
         if (existingGroup == null)
         {
             return false;
         }
 
-        existingGroup.GroupName = groupCreateDto.GroupName;
-        existingGroup.AdministratorName = groupCreateDto.AdministratorName;
+        existingGroup.Name = testCreateDto.Name;
+        existingGroup.RefDoctor = testCreateDto.RefDoctor;
+        existingGroup.Price = testCreateDto.Price;
         _unitOfWork.Commit();
         return true;
     }
 
 
-    private Group GetGroup(int id)
+    private Test GetTest(int id)
     {
-        return _unitOfWork.GroupRepository.GetByIdAsync(id).GetAwaiter().GetResult();
+        return _unitOfWork.TestRepository.GetByIdAsync(id).GetAwaiter().GetResult();
     }
 }

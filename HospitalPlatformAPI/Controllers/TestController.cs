@@ -1,6 +1,7 @@
 using AutoMapper;
 using HospitalPlatformAPI.DTOs;
 using HospitalPlatformAPI.DTOs.Group;
+using HospitalPlatformAPI.DTOs.Test;
 using HospitalPlatformAPI.Repositories.Interfaces;
 using HospitalPlatformAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +31,7 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
-                _responseDto.Result = _testService.GetGroups();
+                _responseDto.Result = _testService.GetTests();
             }
             catch (Exception ex)
             {
@@ -46,7 +47,7 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
-                _responseDto.Result = _testService.GetGroupById(id);
+                _responseDto.Result = _testService.GetTestById(id);
             }
             catch (Exception ex)
             {
@@ -59,11 +60,11 @@ namespace HospitalPlatformAPI.Controllers
         
         [Route("post")]
         [HttpPost]
-        public async Task<ResponseDto> Post([FromBody] GroupCreateDto groupCreateDto)
+        public async Task<ResponseDto> Post([FromBody] TestCreateDto testCreateDto)
         {
             try
             {
-                _responseDto.Result = _testService.AddGroup(groupCreateDto);
+                _responseDto.Result = _testService.AddTest(testCreateDto);
             }
             catch (Exception ex)
             {
@@ -79,7 +80,7 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
-                _responseDto.Result = _testService.DeleteGroup(id);
+                _responseDto.Result = _testService.DeleteTest(id);
             }
             catch (Exception ex)
             {
@@ -91,11 +92,11 @@ namespace HospitalPlatformAPI.Controllers
 
         [Route("put")]
         [HttpPut]
-        public async Task<ResponseDto> Put(GroupCreateDto groupCreateDto)
+        public async Task<ResponseDto> Put(TestCreateDto testCreateDto)
         {
             try
             {
-                _responseDto.Result = _testService.UpdateGroup(groupCreateDto);
+                _responseDto.Result = _testService.UpdateTest(testCreateDto);
             }
             catch (Exception ex)
             {
