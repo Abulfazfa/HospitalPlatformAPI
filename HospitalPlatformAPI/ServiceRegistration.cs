@@ -54,6 +54,8 @@ public static class ServiceRegistration
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddScoped<IGroupRepository, GroupRepository>();
         services.AddScoped<IGroupService, GroupService>();
+        services.AddScoped<ITestRepository, TestRepository>();
+        services.AddScoped<ITestService, TestService>();
         services.AddScoped<IFileService, FileService>();
         services.AddScoped<IEmailService, EmailService>();
     }
