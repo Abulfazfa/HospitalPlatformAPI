@@ -8,9 +8,11 @@ public class AppUser : IdentityUser
     public int? GroupId { get; set; }
     public Group? Group { get; set; }
     public bool IsBlocked { get; set; }
+    public List<Test> Tests { get; set; }
 
     public AppUser()
     {
         IsBlocked = false;
+        Tests = new List<Test>();
     }
 }

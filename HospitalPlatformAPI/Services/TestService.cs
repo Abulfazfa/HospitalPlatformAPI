@@ -33,9 +33,9 @@ namespace HospitalPlatformAPI.Services;
     {
         try
         {
-            var test = _mapper.Map<Test>(testCreateDto);
-            var result = _unitOfWork.TestRepository.AddAsync(test).GetAwaiter().GetResult; 
-            _unitOfWork.Commit();
+            //var test = _mapper.Map<Test>(testCreateDto);
+            //var result = _unitOfWork.TestRepository.AddAsync(test).GetAwaiter().GetResult; 
+            //_unitOfWork.Commit();
             return true;
         }
         catch (Exception e)
@@ -76,9 +76,8 @@ namespace HospitalPlatformAPI.Services;
             return false;
         }
 
-        existingGroup.Name = testCreateDto.Name;
+        existingGroup.AnalysisName = testCreateDto.Name;
         existingGroup.RefDoctor = testCreateDto.RefDoctor;
-        existingGroup.Price = testCreateDto.Price;
         _unitOfWork.Commit();
         return true;
     }

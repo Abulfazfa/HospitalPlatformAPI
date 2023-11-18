@@ -10,9 +10,10 @@ public class AppDbContext : IdentityDbContext<AppUser>
     {
     }
      public DbSet<Group> Groups { get; set; }
+     public DbSet<Analysis> Analyses { get; set; }
      public DbSet<Test> Tests { get; set; }
-     public DbSet<TestResult> TestResults { get; set; }
-     public DbSet<TestNameAndResultEntry> ResultEntries { get; set; }
+     public DbSet<AnalysisResult> AnalysisResults { get; set; }
+     public DbSet<AnalysisNameAndResultEntry> AnalysisNameAndResultEntries { get; set; }
     // public DbSet<Category> Categories { get; set; }
     // protected override void OnModelCreating(ModelBuilder modelBuilder)
     // {

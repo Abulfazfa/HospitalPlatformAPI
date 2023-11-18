@@ -4,6 +4,7 @@ using HospitalPlatformAPI.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HospitalPlatformAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231116174501_AddAnalysisTableToDb")]
+    partial class AddAnalysisTableToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -220,9 +223,6 @@ namespace HospitalPlatformAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("AnalysisPrice")
-                        .HasColumnType("float");
-
                     b.Property<int?>("AnalysisResultId")
                         .HasColumnType("int");
 
@@ -395,7 +395,7 @@ namespace HospitalPlatformAPI.Migrations
             modelBuilder.Entity("HospitalPlatformAPI.Models.AnalysisNameAndResultEntry", b =>
                 {
                     b.HasOne("HospitalPlatformAPI.Models.AnalysisResult", "AnalysisResult")
-                        .WithMany("TestNameAndResultEntry")
+                        .WithMany("TestNameAndResultEntries")
                         .HasForeignKey("AnalysisResultId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -478,7 +478,7 @@ namespace HospitalPlatformAPI.Migrations
 
             modelBuilder.Entity("HospitalPlatformAPI.Models.AnalysisResult", b =>
                 {
-                    b.Navigation("TestNameAndResultEntry");
+                    b.Navigation("TestNameAndResultEntries");
                 });
 
             modelBuilder.Entity("HospitalPlatformAPI.Models.AppUser", b =>

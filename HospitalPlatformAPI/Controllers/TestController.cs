@@ -1,7 +1,9 @@
 using AutoMapper;
+using HospitalPlatformAPI.DAL;
 using HospitalPlatformAPI.DTOs;
 using HospitalPlatformAPI.DTOs.Group;
 using HospitalPlatformAPI.DTOs.Test;
+using HospitalPlatformAPI.Models;
 using HospitalPlatformAPI.Repositories.Interfaces;
 using HospitalPlatformAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -16,15 +18,17 @@ namespace HospitalPlatformAPI.Controllers
         private readonly ITestService _testService;
         private ResponseDto _responseDto;
         private readonly IMapper _mapper;
+        private readonly AppDbContext _appDbContext;
 
 
-        public TestController(ITestService testService, IMapper mapper)
+        public TestController(ITestService testService, IMapper mapper, AppDbContext appDbContext)
         {
             _testService = testService;
             _responseDto = new ResponseDto();
             _mapper = mapper;
+            _appDbContext = appDbContext;
         }
-        
+
         [Route("get")]
         [HttpGet]
         public async Task<ResponseDto> Get()
@@ -64,7 +68,16 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
+                Test test = new()
+                {
+                    AnalysisName = testCreateDto.Name,
+                    RefDoctor = testCreateDto.RefDoctor
+                };
+                var analysisResult = _appDbContext.Analyses.FirstOrDefault(a => a.Name == test.AnalysisName) == null ? null : _appDbContext.Analyses.FirstOrDefault(a => a.Name == test.AnalysisName).AnalysisResult;
+                test.AnalysisResult = analysisResult;
+                _appDbContext.SaveChanges();
                 _responseDto.Result = _testService.AddTest(testCreateDto);
+                
             }
             catch (Exception ex)
             {
