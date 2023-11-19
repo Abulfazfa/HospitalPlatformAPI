@@ -13,11 +13,12 @@ public class UnitOfWork : IUnitOfWork
     private readonly RoleManager<IdentityRole> _roleManager;
     public IGroupRepository GroupRepository { get ; set ; }
     public ITestRepository TestRepository { get ; set ; }
+    public IAnalysisRepository AnalysisRepository { get ; set ; }
     public IGenericRepository<AppUser> AppUserRepo { get; private set; }
 
     public UnitOfWork(AppDbContext appDbContext, UserManager<AppUser> userManager, 
         SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager, 
-        IGroupRepository groupRepository, ITestRepository testRepository)
+        IGroupRepository groupRepository, ITestRepository testRepository, IAnalysisRepository analysisRepository)
     {
         _appDbContext = appDbContext;
         _userManager = userManager;
@@ -25,6 +26,7 @@ public class UnitOfWork : IUnitOfWork
         _roleManager = roleManager;
         GroupRepository = groupRepository;
         TestRepository = testRepository;
+        AnalysisRepository = analysisRepository;
         AppUserRepo = new GenericRepository<AppUser>(_appDbContext);
     }
 

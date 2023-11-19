@@ -35,25 +35,35 @@ namespace HospitalPlatformAPI.Controllers
             }
             return _responseDto;
         }
-        
+
         [Route("post")]
         [HttpPost]
-        public async Task<ResponseDto> Post([FromBody]  AnalysisCreateDto analysisDto)
+        public ResponseDto Post([FromBody] AnalysisCreateDto analysisDto)
         {
             try
             {
-                AnalysisNameAndResultEntry resultEntry = new();
-                resultEntry.Key = analysisDto.Key;
-                AnalysisResult analysisResult = new();
-                analysisResult.TestNameAndResultEntry.Add(resultEntry);
-                Analysis analysis = new()
+                AnalysisResult analysisResult = new AnalysisResult();
+
+                foreach (var key in analysisDto.Key)
+                {
+                    AnalysisNameAndResultEntry resultEntry = new AnalysisNameAndResultEntry();
+                    resultEntry.Key = key;
+                    resultEntry.Value = ""; // Assign a value here if needed
+                    resultEntry.AnalysisResult = analysisResult; // Assigning AnalysisResultId
+                    analysisResult.TestNameAndResultEntry.Add(resultEntry);
+                }
+
+                Analysis analysis = new Analysis
                 {
                     Name = analysisDto.Name,
                     Price = analysisDto.Price,
                     AnalysisResult = analysisResult
                 };
-                _responseDto.Result = _appDbContext.Analyses.Add(analysis);
+
+                var addedAnalysis = _appDbContext.Analyses.Add(analysis);
                 _appDbContext.SaveChanges();
+
+                _responseDto.Result = addedAnalysis.Entity;
             }
             catch (Exception ex)
             {
@@ -62,5 +72,6 @@ namespace HospitalPlatformAPI.Controllers
             }
             return _responseDto;
         }
+
     }
 }

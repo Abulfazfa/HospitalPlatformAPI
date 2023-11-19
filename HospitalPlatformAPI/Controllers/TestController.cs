@@ -8,6 +8,7 @@ using HospitalPlatformAPI.Repositories.Interfaces;
 using HospitalPlatformAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalPlatformAPI.Controllers
 {
@@ -68,16 +69,7 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
-                Test test = new()
-                {
-                    AnalysisName = testCreateDto.Name,
-                    RefDoctor = testCreateDto.RefDoctor
-                };
-                var analysisResult = _appDbContext.Analyses.FirstOrDefault(a => a.Name == test.AnalysisName) == null ? null : _appDbContext.Analyses.FirstOrDefault(a => a.Name == test.AnalysisName).AnalysisResult;
-                test.AnalysisResult = analysisResult;
-                _appDbContext.SaveChanges();
                 _responseDto.Result = _testService.AddTest(testCreateDto);
-                
             }
             catch (Exception ex)
             {

@@ -1,4 +1,6 @@
+using System.Linq.Expressions;
 using HospitalPlatformAPI.DAL;
+using HospitalPlatformAPI.Models;
 using HospitalPlatformAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,17 +15,19 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _appDbContext = dbContext;
         _dbSet = _appDbContext.Set<T>();
     }
-
-    public async Task<T> GetByIdAsync(int id)
-    {
-        return await _dbSet.FindAsync(id);
-    }
-
+    
     public async Task<List<T>> GetAllAsync()
     {
         return await _dbSet.ToListAsync();
     }
-
+    public async Task<List<T>> GetAllAsync(Expression<Func<T, object>> include)
+    {
+        return await _dbSet.Include(include).ToListAsync();
+    }
+    public async Task<T> GetByIdAsync(int id)
+    {
+        return await _dbSet.FindAsync(id);
+    }
     public async Task AddAsync(T entity)
     {
         await _dbSet.AddAsync(entity);
@@ -41,9 +45,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         await Task.CompletedTask;
     }
 
-    public async Task<T> GetByPredicateAsync(Predicate<T> func)
+    public async Task<T> GetByPredicateAsync(Func<T, bool> func, Expression<Func<T, object>> include = null)
     {
-        return await _dbSet.FindAsync(func);
+        return _dbSet.Include(include).FirstOrDefault(func);
     }
     public bool Any(Func<T, bool> func)
     {

@@ -5,10 +5,6 @@ public class Analysis : BaseEntity
     public string Name { get; set; }
     public double? Price { get; set; }
     public AnalysisResult? AnalysisResult { get; set; }
-    public Analysis()
-    {
-        AnalysisResult = new AnalysisResult();
-    }
 }
 public class AnalysisResult : BaseEntity
 {
