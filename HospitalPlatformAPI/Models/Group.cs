@@ -2,8 +2,7 @@ namespace HospitalPlatformAPI.Models;
 
 public class Group : BaseEntity
 {
-    public string AdministratorName { get; set;}
-    public string GroupName { get; set; }
-    public List<AppUser> GroupMembers { get; set; }
-    
+    public string Name { get; set;}
+    public List<Doctor> Doctors { get; set; }
+    public List<Group> Services { get; set; }
 }

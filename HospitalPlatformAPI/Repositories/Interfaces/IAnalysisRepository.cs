@@ -5,5 +5,4 @@ namespace HospitalPlatformAPI.Repositories.Interfaces;
 
 public interface IAnalysisRepository : IGenericRepository<Analysis>
 {
-    
 }
