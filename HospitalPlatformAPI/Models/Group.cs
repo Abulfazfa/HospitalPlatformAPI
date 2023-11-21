@@ -4,5 +4,11 @@ public class Group : BaseEntity
 {
     public string Name { get; set;}
     public List<Doctor> Doctors { get; set; }
-    public List<Group> Services { get; set; }
+    public int OfficeId { get; set; }
+    public Office Office { get; set; }
+
+    public Group()
+    {
+        Doctors = new List<Doctor>();
+    }
 }

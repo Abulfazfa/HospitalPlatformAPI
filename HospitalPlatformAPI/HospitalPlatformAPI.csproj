@@ -29,4 +29,11 @@
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Areas\DoctorController\Controllers\" />
+      <Folder Include="Areas\DoctorController\Data\" />
+      <Folder Include="Areas\DoctorController\Models\" />
+      <Folder Include="Areas\DoctorController\Views\" />
+    </ItemGroup>
+
 </Project>

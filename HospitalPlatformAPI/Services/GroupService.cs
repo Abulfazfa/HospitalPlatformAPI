@@ -19,7 +19,7 @@ public class GroupService : IGroupService
 
     public List<GroupReturnDto> GetGroups()
     {
-        var groups = _unitOfWork.GroupRepository.GetAllAsync().GetAwaiter().GetResult();
+        var groups = _unitOfWork.GroupRepository.GetAllAsync(p => p.Doctors).GetAwaiter().GetResult();
         var list = new List<GroupReturnDto>();
         foreach (var group in groups)
         {
@@ -75,8 +75,7 @@ public class GroupService : IGroupService
             return false;
         }
 
-        existingGroup.GroupName = groupCreateDto.GroupName;
-        existingGroup.AdministratorName = groupCreateDto.AdministratorName;
+        existingGroup.Name = groupCreateDto.GroupName;
         _unitOfWork.Commit();
         return true;
     }
@@ -84,6 +83,6 @@ public class GroupService : IGroupService
 
     private Group GetGroup(int id)
     {
-        return _unitOfWork.GroupRepository.GetByIdAsync(id).GetAwaiter().GetResult();
+        var sfef = _unitOfWork.GroupRepository.GetByPredicateAsync(g => g.Id == id,g => g.Doctors).GetAwaiter().GetResult();
     }
 }
