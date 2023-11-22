@@ -20,10 +20,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         return await _dbSet.ToListAsync();
     }
-    public async Task<List<T>> GetAllAsync(Expression<Func<T, object>>[] include)
-    {
-        return await _dbSet.Include(include).ToListAsync();
-    }
     public async Task<T> GetByIdAsync(int id)
     {
         return await _dbSet.FindAsync(id);
@@ -32,32 +28,19 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         await _dbSet.AddAsync(entity);
     }
-
     public async Task UpdateAsync(T entity)
     {
         _dbSet.Update(entity);
         await Task.CompletedTask;
     }
-
     public async Task DeleteAsync(T entity)
     {
         _dbSet.Remove(entity);
         await Task.CompletedTask;
     }
-
-    public IQueryable GetByPredicateAsync(Func<T> func, Expression<Func<T, object>>[] includes = null)
+    public async Task<T> GetByPredicateAsync(Func<T, bool> func)
     {
-        var query = _dbSet.AsQueryable();
-
-        if (includes != null)
-        {
-            foreach (var include in includes)
-            {
-                query = query.Include(include);
-            }
-        }
-
-        return query;
+        return _dbSet.FirstOrDefault(func);
     }
     public bool Any(Func<T, bool> func)
     {
@@ -71,5 +54,16 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public IQueryable Queryable()
     {
         return _dbSet.AsQueryable();
+    }
+    public IQueryable<T> Include(params Expression<Func<T, object>>[] includes)
+    {
+        IQueryable<T> query = _dbSet;
+
+        if (includes != null)
+        {
+            query = includes.Aggregate(query, (current, include) => current.Include(include));
+        }
+
+        return query;
     }
 }

@@ -3,6 +3,7 @@ using HospitalPlatformAPI.DTOs.Group;
 using HospitalPlatformAPI.Models;
 using HospitalPlatformAPI.Repositories.Interfaces;
 using HospitalPlatformAPI.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalPlatformAPI.Services;
 
@@ -19,7 +20,7 @@ public class GroupService : IGroupService
 
     public List<GroupReturnDto> GetGroups()
     {
-        var groups = _unitOfWork.GroupRepository.GetAllAsync(p => p.Doctors).GetAwaiter().GetResult();
+        var groups = _unitOfWork.GroupRepository.Include(g => g.Doctors).ToList();
         var list = new List<GroupReturnDto>();
         foreach (var group in groups)
         {
@@ -83,6 +84,6 @@ public class GroupService : IGroupService
 
     private Group GetGroup(int id)
     {
-        var sfef = _unitOfWork.GroupRepository.GetByPredicateAsync(g => g.Id == id,g => g.Doctors).GetAwaiter().GetResult();
+        return _unitOfWork.GroupRepository.Include(g => g.Doctors).FirstOrDefault();
     }
 }

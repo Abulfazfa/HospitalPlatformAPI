@@ -20,7 +20,7 @@ namespace HospitalPlatformAPI.Services;
 
     public List<TestReturnDto> GetTests()
     {
-        var tests = _unitOfWork.TestRepository.GetAllAsync(t => t.AnalysisResult).GetAwaiter().GetResult();
+        var tests = _unitOfWork.TestRepository.Include(a => a.AnalysisResult).ToList();
         var list = new List<TestReturnDto>();
         foreach (var test in tests)
         {
@@ -46,8 +46,7 @@ namespace HospitalPlatformAPI.Services;
             var analysis = _unitOfWork.AnalysisRepository.GetByPredicateAsync(a => a.Name == test.AnalysisName).Result;
             if (analysis != null)
             {
-                var analysisResult = _unitOfWork.AnalysisRepository
-                    .GetByPredicateAsync(a => a.Name == test.AnalysisName, a => a.AnalysisResult).Result.AnalysisResult;
+                var analysisResult = _unitOfWork.AnalysisRepository.Include(a => a.AnalysisResult).FirstOrDefault(a => a.Name == test.AnalysisName).AnalysisResult;
                 test.AnalysisResult = analysisResult;
                 test.AnalysisPrice = analysis.Price;
             }
@@ -98,6 +97,6 @@ namespace HospitalPlatformAPI.Services;
 
     private Test GetTest(int id)
     {
-        return _unitOfWork.TestRepository.GetByPredicateAsync(t => t.Id == id, a => a.AnalysisName).Result;
+        return _unitOfWork.TestRepository.Include(a =>a.AnalysisResult).FirstOrDefault(a => a.Id == id);
     }
 }
