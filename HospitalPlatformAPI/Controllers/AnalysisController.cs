@@ -1,8 +1,7 @@
 using HospitalPlatformAPI.DAL;
 using HospitalPlatformAPI.DTOs;
 using HospitalPlatformAPI.DTOs.Analysis;
-using HospitalPlatformAPI.Models;
-using Microsoft.AspNetCore.Http;
+using HospitalPlatformAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalPlatformAPI.Controllers
@@ -11,22 +10,52 @@ namespace HospitalPlatformAPI.Controllers
     [ApiController]
     public class AnalysisController : ControllerBase
     {
+        private readonly IAnalysisService _analysisService;
         private readonly AppDbContext _appDbContext;
         private readonly ResponseDto _responseDto;
 
-        public AnalysisController(AppDbContext appDbContext)
+        public AnalysisController(AppDbContext appDbContext, IAnalysisService analysisService)
         {
             _appDbContext = appDbContext;
             _responseDto = new ResponseDto();
+            _analysisService = analysisService;
         }
-        
+
         [Route("get")]
         [HttpGet]
-        public async Task<ResponseDto> Get()
+        public IActionResult Get()
+        {
+            //try
+            //{
+            //    _responseDto.Result =  //_analysisService.Get();
+            //}
+            //catch (Exception ex)
+            //{
+            //    _responseDto.IsSuccess = false;
+            //    _responseDto.Message = ex.Message;
+            //}
+            return Ok(_appDbContext.Analyses.ToList());
+        }
+
+        [Route("post")]
+        [HttpPost]
+        public ResponseDto Post([FromBody] AnalysisCreateDto analysisDto)
         {
             try
             {
-                _responseDto.Result = _appDbContext.Analyses.ToList();
+                //_analysisService.Add(analysisDto);
+
+                //foreach (var key in analysisDto.Key)
+                //{
+                //    AnalysisNameAndResultEntry resultEntry = new AnalysisNameAndResultEntry();
+                //    resultEntry.Key = key;
+                //    resultEntry.Value = ""; // Assign a value here if needed
+                //    resultEntry.AnalysisResult = analysisResult; // Assigning AnalysisResultId
+                //    analysisResult.TestNameAndResultEntry.Add(resultEntry);
+                //}
+
+
+                _responseDto.Result = "";
             }
             catch (Exception ex)
             {
@@ -36,40 +65,10 @@ namespace HospitalPlatformAPI.Controllers
             return _responseDto;
         }
 
-        [Route("post")]
-        [HttpPost]
-        public ResponseDto Post([FromBody] AnalysisCreateDto analysisDto)
+        [Route("delete")]
+        [HttpDelete]
+        public ResponseDto Delete(int id)
         {
-            try
-            {
-                AnalysisResult analysisResult = new AnalysisResult();
-
-                foreach (var key in analysisDto.Key)
-                {
-                    AnalysisNameAndResultEntry resultEntry = new AnalysisNameAndResultEntry();
-                    resultEntry.Key = key;
-                    resultEntry.Value = ""; // Assign a value here if needed
-                    resultEntry.AnalysisResult = analysisResult; // Assigning AnalysisResultId
-                    analysisResult.TestNameAndResultEntry.Add(resultEntry);
-                }
-
-                Analysis analysis = new Analysis
-                {
-                    Name = analysisDto.Name,
-                    Price = analysisDto.Price,
-                    AnalysisResult = analysisResult
-                };
-
-                var addedAnalysis = _appDbContext.Analyses.Add(analysis);
-                _appDbContext.SaveChanges();
-
-                _responseDto.Result = addedAnalysis.Entity;
-            }
-            catch (Exception ex)
-            {
-                _responseDto.IsSuccess = false;
-                _responseDto.Message = ex.Message;
-            }
             return _responseDto;
         }
 

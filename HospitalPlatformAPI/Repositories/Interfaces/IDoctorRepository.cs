@@ -1,6 +1,8 @@
+using HospitalPlatformAPI.Models;
+
 namespace HospitalPlatformAPI.Repositories.Interfaces;
 
-public class IDoctorRepository
+public interface IDoctorRepository : IGenericRepository<Doctor>
 {
     
 }

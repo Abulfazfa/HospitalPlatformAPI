@@ -1,6 +1,8 @@
+using HospitalPlatformAPI.Services.Interfaces;
+
 namespace HospitalPlatformAPI.Services;
 
-public class OfficeService
+public class OfficeService : IOfficeService
 {
     
 }

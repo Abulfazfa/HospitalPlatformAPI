@@ -20,12 +20,12 @@ public class GroupService : IGroupService
 
     public List<GroupReturnDto> GetGroups()
     {
-        var groups = _unitOfWork.GroupRepository.Include(g => g.Doctors).ToList();
+        //var groups = _unitOfWork.GroupRepository.Include(g => g.Doctors).ToList();
         var list = new List<GroupReturnDto>();
-        foreach (var group in groups)
-        {
-           list.Add(_mapper.Map<GroupReturnDto>(group));
-        }
+        // foreach (var group in groups)
+        // {
+        //    list.Add(_mapper.Map<GroupReturnDto>(group));
+        // }
         return list;
     }
 
@@ -84,6 +84,7 @@ public class GroupService : IGroupService
 
     private Group GetGroup(int id)
     {
-        return _unitOfWork.GroupRepository.Include(g => g.Doctors).FirstOrDefault();
+        return new Group();
+
     }
 }

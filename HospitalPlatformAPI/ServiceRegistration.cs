@@ -56,6 +56,12 @@ public static class ServiceRegistration
         services.AddScoped<IGroupService, GroupService>();
         services.AddScoped<ITestRepository, TestRepository>();
         services.AddScoped<ITestService, TestService>();
+        services.AddScoped<IOfficeRepository, OfficeRepository>();
+        services.AddScoped<IOfficeService, OfficeService>();
+        services.AddScoped<IDoctorRepository, DoctorRepository>();
+        services.AddScoped<IDoctorService, DoctorService>();
+        services.AddScoped<IAnalysisRepository, AnalysisRepository>();
+        services.AddScoped<IAnalysisService, AnalysisService>();
         services.AddScoped<IFileService, FileService>();
         services.AddScoped<IEmailService, EmailService>();
     }
