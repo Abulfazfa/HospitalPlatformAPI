@@ -28,32 +28,46 @@ namespace HospitalPlatformAPI.Services
             }
             return list;
         }
-        public TestReturnDto GetById(int id)
-        {
-            var test = Get(id);
-            return _mapper.Map<TestReturnDto>(test);
-        }
 
         public bool Add(AnalysisCreateDto analysisCreateDto)
         {
             try
             {
                 Analysis analysis = _mapper.Map<Analysis>(analysisCreateDto);
+                AnalysisResult analysisResult = new();
+                analysis.AnalysisResult = analysisResult;
+        
+                if (analysisCreateDto.KeyEntries != null && analysisCreateDto.KeyEntries.Count > 0)
+                {
+                    foreach (var item in analysisCreateDto.KeyEntries)
+                    {
+                        AnalysisNameAndResultEntry entry = new AnalysisNameAndResultEntry(); 
+
+                        entry.Key = item.Key;
+                        entry.Value = item.Value;
+                        //entry.Desc = item.Desc; 
+
+                        analysisResult.TestNameAndResultEntry.Add(entry);
+                    }
+                }
+
                 _unitOfWork.AnalysisRepository.AddAsync(analysis);
                 _unitOfWork.Commit();
                 return true;
             }
             catch (Exception e)
             {
+                // Log the exception e for debugging purposes
                 return false;
             }
         }
+
         public bool Delete(int id)
         {
             try
             {
                 var test = Get(id);
-                var result = _unitOfWork.TestRepository.DeleteAsync(test).GetAwaiter().GetResult;
+                var result = _unitOfWork.AnalysisRepository.DeleteAsync(test).GetAwaiter().GetResult;
                 _unitOfWork.Commit();
                 return true;
             }
@@ -65,27 +79,27 @@ namespace HospitalPlatformAPI.Services
 
 
 
-        public bool Update(TestCreateDto testCreateDto)
+        // public bool Update(AnalysisCreateDto analysis)
+        // {
+        //     var groupEntity = _mapper.Map<Analysis>(analysis);
+        //
+        //     var existingGroup = _unitOfWork.AnalysisRepository.GetByIdAsync(groupEntity.Id).Result;
+        //
+        //     if (existingGroup == null)
+        //     {
+        //         return false;
+        //     }
+        //
+        //     existingGroup.Name = analysis.Name;
+        //     existingGroup.Price = analysis.price;
+        //     _unitOfWork.Commit();
+        //     return true;
+        // }
+
+
+        public Analysis Get(int id)
         {
-            var groupEntity = _mapper.Map<Test>(testCreateDto);
-
-            var existingGroup = _unitOfWork.TestRepository.GetByIdAsync(groupEntity.Id).Result;
-
-            if (existingGroup == null)
-            {
-                return false;
-            }
-
-            existingGroup.AnalysisName = testCreateDto.Name;
-            existingGroup.RefDoctor = testCreateDto.RefDoctor;
-            _unitOfWork.Commit();
-            return true;
-        }
-
-
-        private Test Get(int id)
-        {
-            return _unitOfWork.TestRepository.Include(a => a.AnalysisResult).FirstOrDefault(a => a.Id == id);
+            return _unitOfWork.AnalysisRepository.GetByIdAsync(id).Result;
         }
     }
 }

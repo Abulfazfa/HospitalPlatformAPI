@@ -23,18 +23,33 @@ namespace HospitalPlatformAPI.Controllers
 
         [Route("get")]
         [HttpGet]
-        public IActionResult Get()
+        public ResponseDto Get()
         {
-            //try
-            //{
-            //    _responseDto.Result =  //_analysisService.Get();
-            //}
-            //catch (Exception ex)
-            //{
-            //    _responseDto.IsSuccess = false;
-            //    _responseDto.Message = ex.Message;
-            //}
-            return Ok(_appDbContext.Analyses.ToList());
+            try
+            {
+                _responseDto.Result = _analysisService.Get();
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
+        [Route("get/{id}")]
+        [HttpGet]
+        public ResponseDto Get(int id)
+        {
+            try
+            {
+                _responseDto.Result = _analysisService.Get(id);
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
         }
 
         [Route("post")]
@@ -43,19 +58,7 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
-                //_analysisService.Add(analysisDto);
-
-                //foreach (var key in analysisDto.Key)
-                //{
-                //    AnalysisNameAndResultEntry resultEntry = new AnalysisNameAndResultEntry();
-                //    resultEntry.Key = key;
-                //    resultEntry.Value = ""; // Assign a value here if needed
-                //    resultEntry.AnalysisResult = analysisResult; // Assigning AnalysisResultId
-                //    analysisResult.TestNameAndResultEntry.Add(resultEntry);
-                //}
-
-
-                _responseDto.Result = "";
+                _responseDto.Result =  _analysisService.Add(analysisDto);
             }
             catch (Exception ex)
             {
@@ -69,6 +72,15 @@ namespace HospitalPlatformAPI.Controllers
         [HttpDelete]
         public ResponseDto Delete(int id)
         {
+            try
+            { 
+                _responseDto.Result = _analysisService.Delete(id);
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
             return _responseDto;
         }
 

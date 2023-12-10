@@ -61,9 +61,28 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
         if (includes != null)
         {
-            query = includes.Aggregate(query, (current, include) => current.Include(include));
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
         }
 
         return query;
     }
+
+    public IQueryable<T> IncludeThen(params Expression<Func<T, object>>[] includes)
+    {
+        IQueryable<T> query = _dbSet;
+
+        if (includes != null && includes.Length > 0)
+        {
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+        }
+
+        return query;
+    }
+
 }

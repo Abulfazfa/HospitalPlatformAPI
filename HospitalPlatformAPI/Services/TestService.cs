@@ -4,6 +4,7 @@ using HospitalPlatformAPI.DTOs.Test;
 using HospitalPlatformAPI.Models;
 using HospitalPlatformAPI.Repositories.Interfaces;
 using HospitalPlatformAPI.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalPlatformAPI.Services;
 
@@ -20,7 +21,7 @@ namespace HospitalPlatformAPI.Services;
 
     public List<TestReturnDto> GetTests()
     {
-        var tests = _unitOfWork.TestRepository.Include(a => a.AnalysisResult).ToList();
+        var tests = _unitOfWork.TestRepository.Include(a => a.TestResult).ToList();
         var list = new List<TestReturnDto>();
         foreach (var test in tests)
         {
@@ -46,9 +47,19 @@ namespace HospitalPlatformAPI.Services;
             var analysis = _unitOfWork.AnalysisRepository.GetByPredicateAsync(a => a.Name == test.AnalysisName).Result;
             if (analysis != null)
             {
-                var analysisResult = _unitOfWork.AnalysisRepository.Include(a => a.AnalysisResult).FirstOrDefault(a => a.Name == test.AnalysisName).AnalysisResult;
-                test.AnalysisResult = analysisResult;
-                test.AnalysisPrice = analysis.Price;
+                var analysisResult = _unitOfWork.AnalysisRepository.Include(a => a.AnalysisResult).Include(a => a.AnalysisResult.TestNameAndResultEntry)
+                    .FirstOrDefault(a => a.Name == test.AnalysisName).AnalysisResult;
+
+                test.TestPrice = analysis.Price;
+                TestResult testResult = new TestResult();
+                foreach (var item in analysisResult.TestNameAndResultEntry)
+                {
+                    TestNameAndResultEntry testNameAndResultEntry = new();
+                    testNameAndResultEntry.Key = item.Key;
+                    testNameAndResultEntry.Value = item.Value;
+                    testResult.TestNameAndResultEntry.Add(testNameAndResultEntry);
+                }
+                test.TestResult = testResult;
             }
 
             _unitOfWork.TestRepository.AddAsync(test);
@@ -97,6 +108,6 @@ namespace HospitalPlatformAPI.Services;
 
     private Test GetTest(int id)
     {
-        return _unitOfWork.TestRepository.Include(a =>a.AnalysisResult).FirstOrDefault(a => a.Id == id);
+        return _unitOfWork.TestRepository.Include(a =>a.TestResult).FirstOrDefault(a => a.Id == id);
     }
 }
