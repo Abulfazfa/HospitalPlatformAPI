@@ -1,4 +1,5 @@
 using AutoMapper;
+using HospitalPlatformAPI.DTOs.Analysis;
 using HospitalPlatformAPI.DTOs.Group;
 using HospitalPlatformAPI.DTOs.Test;
 using HospitalPlatformAPI.Models;
@@ -21,11 +22,23 @@ namespace HospitalPlatformAPI.Services;
 
     public List<TestReturnDto> GetTests()
     {
-        var tests = _unitOfWork.TestRepository.Include(a => a.TestResult).ToList();
+        var tests = _unitOfWork.TestRepository.Include(a => a.TestResult).Include(a => a.TestResult.TestNameAndResultEntry).ToList();
         var list = new List<TestReturnDto>();
         foreach (var test in tests)
         {
-           list.Add(_mapper.Map<TestReturnDto>(test));
+            var result = _mapper.Map<TestReturnDto>(test);
+            List<TestNameAndResultEntryDto> testNameAndResultEntryDtos= new List<TestNameAndResultEntryDto>();
+            foreach (var resultEntry in test.TestResult.TestNameAndResultEntry)
+            {
+                TestNameAndResultEntryDto testNameAndResultEntry = new();
+                testNameAndResultEntry.Key = resultEntry.Key;
+                testNameAndResultEntry.Value = resultEntry.Value;
+                testNameAndResultEntryDtos.Add(testNameAndResultEntry);
+                //result.TestNameAndResultEntry.Add(testNameAndResultEntry);
+                
+            }
+            result.TestNameAndResultEntry = testNameAndResultEntryDtos;
+           list.Add(result);
         }
         return list;
     }
