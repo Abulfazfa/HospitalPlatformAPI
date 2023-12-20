@@ -20,12 +20,13 @@ public class GroupService : IGroupService
 
     public List<GroupReturnDto> GetGroups()
     {
-        //var groups = _unitOfWork.GroupRepository.Include(g => g.Doctors).ToList();
+        var groups = _unitOfWork.GroupRepository
+            .GetAllAsync().Result;
         var list = new List<GroupReturnDto>();
-        // foreach (var group in groups)
-        // {
-        //    list.Add(_mapper.Map<GroupReturnDto>(group));
-        // }
+        foreach (var group in groups)
+        {
+           list.Add(_mapper.Map<GroupReturnDto>(group));
+        }
         return list;
     }
 
@@ -34,6 +35,7 @@ public class GroupService : IGroupService
         try
         {
             var group = _mapper.Map<Group>(groupCreateDto);
+            group.OfficeId = _unitOfWork.OfficeRepository.GetByPredicateAsync(o => o.Name == groupCreateDto.Name).Result.Id;
             var result = _unitOfWork.GroupRepository.AddAsync(group).GetAwaiter().GetResult; 
             _unitOfWork.Commit();
             return true;
@@ -75,8 +77,8 @@ public class GroupService : IGroupService
         {
             return false;
         }
-
-        existingGroup.Name = groupCreateDto.GroupName;
+        groupEntity.Id = existingGroup.Id;
+        _unitOfWork.GroupRepository.UpdateAsync(groupEntity);      
         _unitOfWork.Commit();
         return true;
     }

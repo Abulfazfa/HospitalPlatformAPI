@@ -1,6 +1,8 @@
 using AutoMapper;
 using HospitalPlatformAPI.DTOs;
 using HospitalPlatformAPI.DTOs.Group;
+using HospitalPlatformAPI.DTOs.Office;
+using HospitalPlatformAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +14,13 @@ namespace HospitalPlatformAPI.Controllers
     {
         private readonly ResponseDto _responseDto;
         private readonly IMapper _mapper;
+        private readonly IOfficeService _officeService;
 
-        public OfficeController(IMapper mapper)
+        public OfficeController(IMapper mapper, IOfficeService officeService)
         {
             _responseDto = new ResponseDto();
             _mapper = mapper;
+            _officeService = officeService;
         }
 
         [Route("get")]
@@ -25,7 +29,7 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
-                //_responseDto.Result = _groupService.GetGroups();
+                _responseDto.Result = _officeService.Get();
             }
             catch (Exception ex)
             {
@@ -41,7 +45,7 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
-                //_responseDto.Result = _groupService.GetGroupById(id);
+                _responseDto.Result = _officeService.GetTestById(id);
             }
             catch (Exception ex)
             {
@@ -53,11 +57,11 @@ namespace HospitalPlatformAPI.Controllers
         
         [Route("post")]
         [HttpPost]
-        public async Task<ResponseDto> Post([FromBody] GroupCreateDto groupCreateDto)
+        public async Task<ResponseDto> Post([FromBody] CreateOfficeDto groupCreateDto)
         {
             try
             {
-                //_responseDto.Result = _groupService.AddGroup(groupCreateDto);
+                _responseDto.Result = _officeService.AddOffice(groupCreateDto);
             }
             catch (Exception ex)
             {
@@ -73,7 +77,7 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
-                //_responseDto.Result = _groupService.DeleteGroup(id);
+                _responseDto.Result = _officeService.DeleteTest(id);
             }
             catch (Exception ex)
             {
@@ -85,11 +89,11 @@ namespace HospitalPlatformAPI.Controllers
 
         [Route("put")]
         [HttpPut]
-        public async Task<ResponseDto> Put(GroupCreateDto groupCreateDto)
+        public async Task<ResponseDto> Put(CreateOfficeDto groupCreateDto)
         {
             try
             {
-                //_responseDto.Result = _groupService.UpdateGroup(groupCreateDto);
+                _responseDto.Result = _officeService.UpdateTest(groupCreateDto);
             }
             catch (Exception ex)
             {

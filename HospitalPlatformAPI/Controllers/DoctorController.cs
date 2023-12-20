@@ -1,6 +1,8 @@
 using AutoMapper;
 using HospitalPlatformAPI.DTOs;
+using HospitalPlatformAPI.DTOs.Doctor;
 using HospitalPlatformAPI.DTOs.Group;
+using HospitalPlatformAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,13 +12,15 @@ namespace HospitalPlatformAPI.Controllers
     [ApiController]
     public class DoctorController : ControllerBase
     {
-         private readonly ResponseDto _responseDto;
+        private readonly ResponseDto _responseDto;
         private readonly IMapper _mapper;
+        private readonly IDoctorService _doctorService;
 
-        public DoctorController(IMapper mapper)
+        public DoctorController(IMapper mapper, IDoctorService doctorService)
         {
             _responseDto = new ResponseDto();
             _mapper = mapper;
+            _doctorService = doctorService;
         }
 
         [Route("get")]
@@ -25,7 +29,7 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
-                //_responseDto.Result = _groupService.GetGroups();
+                _responseDto.Result = _doctorService.Get();
             }
             catch (Exception ex)
             {
@@ -41,7 +45,7 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
-                //_responseDto.Result = _groupService.GetGroupById(id);
+               // _responseDto.Result = _groupService.GetGroupById(id);
             }
             catch (Exception ex)
             {
@@ -53,11 +57,11 @@ namespace HospitalPlatformAPI.Controllers
         
         [Route("post")]
         [HttpPost]
-        public async Task<ResponseDto> Post([FromBody] GroupCreateDto groupCreateDto)
+        public async Task<ResponseDto> Post([FromBody] DoctorCreateDto doctorCreateDto)
         {
             try
             {
-                //_responseDto.Result = _groupService.AddGroup(groupCreateDto);
+                _responseDto.Result = _doctorService.Add(doctorCreateDto);
             }
             catch (Exception ex)
             {
