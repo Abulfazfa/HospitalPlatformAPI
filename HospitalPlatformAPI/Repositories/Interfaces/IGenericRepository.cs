@@ -14,4 +14,5 @@ public interface IGenericRepository<T> where T : class
     List<T> Where(Func<T, bool> func);
     IQueryable Queryable();
     IQueryable<T> Include(params Expression<Func<T, object>>[] includes);
+    IQueryable<T> IncludeThen(params Expression<Func<T, object>>[] includes);
 }

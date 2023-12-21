@@ -35,8 +35,8 @@ public class DoctorService : IDoctorService
         try
         {
             var doctor = _mapper.Map<Doctor>(doctorCreateDto);
-            //doctor.GroupId = _unitOfWork.GroupRepository.GetByPredicateAsync(d => d.Name == doctorCreateDto.Branch).Result.Id;
-            //doctor.OfficeId = _unitOfWork.OfficeRepository.GetByPredicateAsync(d => d.Name == doctorCreateDto.WorkingOffice).Result.Id;
+            doctor.GroupId = _unitOfWork.GroupRepository.GetByPredicateAsync(d => d.Name == doctorCreateDto.Branch).Result.Id;
+            doctor.OfficeId = _unitOfWork.OfficeRepository.GetByPredicateAsync(d => d.Name == doctorCreateDto.WorkingOffice).Result.Id;
             var result = _unitOfWork.DoctorRepository.AddAsync(doctor).GetAwaiter().GetResult;
             _unitOfWork.Commit();
             return true;

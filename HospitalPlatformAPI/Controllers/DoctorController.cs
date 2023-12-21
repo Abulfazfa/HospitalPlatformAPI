@@ -13,13 +13,11 @@ namespace HospitalPlatformAPI.Controllers
     public class DoctorController : ControllerBase
     {
         private readonly ResponseDto _responseDto;
-        private readonly IMapper _mapper;
         private readonly IDoctorService _doctorService;
 
-        public DoctorController(IMapper mapper, IDoctorService doctorService)
+        public DoctorController(IDoctorService doctorService)
         {
             _responseDto = new ResponseDto();
-            _mapper = mapper;
             _doctorService = doctorService;
         }
 
@@ -45,7 +43,7 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
-               // _responseDto.Result = _groupService.GetGroupById(id);
+                //_responseDto.Result = _doctorService.Get(id);
             }
             catch (Exception ex)
             {

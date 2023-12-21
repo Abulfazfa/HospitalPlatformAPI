@@ -7,6 +7,7 @@ using HospitalPlatformAPI.Models;
 using HospitalPlatformAPI.Repositories.Interfaces;
 using HospitalPlatformAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace HospitalPlatformAPI.Services;
 
@@ -23,7 +24,13 @@ public class OfficeService : IOfficeService
 
     public List<ReturnOfficeDto> Get()
     {
-        var offices = _unitOfWork.OfficeRepository.GetAllAsync().Result;
+		Expression<Func<Office, object>>[] includes = {
+	        c => c.Groups.Select(p => p.Doctors)
+        };
+
+
+
+		var offices = _unitOfWork.OfficeRepository.Include(o => o.Groups).ToList();
         var list = new List<ReturnOfficeDto>();
         foreach (var office in offices)
         {
@@ -34,7 +41,7 @@ public class OfficeService : IOfficeService
     }
     public ReturnOfficeDto GetTestById(int id)
     {
-        var test = GetTest(id);
+        var test = GetOffice(id);
         return _mapper.Map<ReturnOfficeDto>(test);
     }
 
@@ -52,11 +59,12 @@ public class OfficeService : IOfficeService
             return false;
         }
     }
+
     public bool DeleteTest(int id)
     {
         try
         {
-            var office = GetTest(id);
+            var office = GetOffice(id);
             var result = _unitOfWork.OfficeRepository.DeleteAsync(office).GetAwaiter().GetResult;
             _unitOfWork.Commit();
             return true;
@@ -84,7 +92,7 @@ public class OfficeService : IOfficeService
         return true;
     }
 
-    private Office GetTest(int id)
+    private Office GetOffice(int id)
     {
         return _unitOfWork.OfficeRepository.Include(a => a.Groups).FirstOrDefault(a => a.Id == id);
     }

@@ -19,7 +19,8 @@ public class MapProfile : Profile
         CreateMap<Test, TestReturnDto>().ReverseMap();
         CreateMap<Analysis, AnalysisCreateDto>().ReverseMap();
         CreateMap<Doctor, DoctorReturnDto>().ReverseMap();
-        CreateMap<Doctor, DoctorCreateDto>().ReverseMap();
+        CreateMap<DoctorCreateDto, Doctor>().ForMember(ds => ds.Branch, map => map.Ignore())
+            .ForMember(ds => ds.WorkingOffice, map => map.Ignore()).ReverseMap();
         CreateMap<Office, CreateOfficeDto>().ReverseMap();
         CreateMap<Office, ReturnOfficeDto>().ReverseMap();
 

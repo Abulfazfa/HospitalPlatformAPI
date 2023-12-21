@@ -21,7 +21,7 @@ public class GroupService : IGroupService
     public List<GroupReturnDto> GetGroups()
     {
         var groups = _unitOfWork.GroupRepository
-            .GetAllAsync().Result;
+            .Include(g => g.Doctors).ToList();
         var list = new List<GroupReturnDto>();
         foreach (var group in groups)
         {
