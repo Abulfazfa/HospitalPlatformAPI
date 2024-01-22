@@ -7,5 +7,8 @@ namespace HospitalPlatformAPI.Services.Interfaces;
 public interface IDoctorService
 {
     List<DoctorReturnDto> Get();
-    bool Add(DoctorCreateDto doctorCreateDto);
+    DoctorReturnDto GetGroupById(int id);
+    bool Add(DoctorCreateDto doctorCreateDto); 
+    bool Delete(int id);
+    bool Update(DoctorCreateDto createDto);
 }

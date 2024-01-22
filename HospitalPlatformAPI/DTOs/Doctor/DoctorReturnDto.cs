@@ -2,6 +2,7 @@
 {
     public class DoctorReturnDto
     {
+        public int Id { get; set; }
         public string FullName { get; set; }
         public List<string> About { get; set; }
         public string Branch { get; set; }

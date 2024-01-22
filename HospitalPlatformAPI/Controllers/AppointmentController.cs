@@ -1,6 +1,6 @@
 using HospitalPlatformAPI.DTOs;
+using HospitalPlatformAPI.DTOs.Appointment;
 using HospitalPlatformAPI.DTOs.Doctor;
-using HospitalPlatformAPI.DTOs.Group;
 using HospitalPlatformAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,15 +9,15 @@ namespace HospitalPlatformAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DoctorController : ControllerBase
+    public class AppointmentController : ControllerBase
     {
         private readonly ResponseDto _responseDto;
-        private readonly IDoctorService _doctorService;
+        private readonly IAppointmentService _appointmentService;
 
-        public DoctorController(IDoctorService doctorService)
+        public AppointmentController(IAppointmentService appointmentService)
         {
+            _appointmentService = appointmentService;
             _responseDto = new ResponseDto();
-            _doctorService = doctorService;
         }
 
         [Route("get")]
@@ -26,7 +26,7 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
-                _responseDto.Result = _doctorService.Get();
+                _responseDto.Result = _appointmentService.Get();
             }
             catch (Exception ex)
             {
@@ -42,7 +42,7 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
-                _responseDto.Result = _doctorService.GetGroupById(id);
+                _responseDto.Result = _appointmentService.GetGroupById(id);
             }
             catch (Exception ex)
             {
@@ -54,11 +54,11 @@ namespace HospitalPlatformAPI.Controllers
         
         [Route("post")]
         [HttpPost]
-        public async Task<ResponseDto> Post([FromBody] DoctorCreateDto doctorCreateDto)
+        public async Task<ResponseDto> Post([FromBody] CreateAppointmentDto createAppointmentDto)
         {
             try
             {
-                _responseDto.Result = _doctorService.Add(doctorCreateDto);
+                _responseDto.Result = _appointmentService.Add(createAppointmentDto);
             }
             catch (Exception ex)
             {
@@ -74,7 +74,7 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
-                _responseDto.Result = _doctorService.Delete(id);
+                _responseDto.Result = _appointmentService.Delete(id);
             }
             catch (Exception ex)
             {
@@ -86,11 +86,11 @@ namespace HospitalPlatformAPI.Controllers
 
         [Route("put")]
         [HttpPut]
-        public async Task<ResponseDto> Put(DoctorCreateDto doctorCreateDto)
+        public async Task<ResponseDto> Put(CreateAppointmentDto createAppointmentDto)
         {
             try
             {
-                _responseDto.Result = _doctorService.Update(doctorCreateDto);
+                _responseDto.Result = _appointmentService.Update(createAppointmentDto);
             }
             catch (Exception ex)
             {

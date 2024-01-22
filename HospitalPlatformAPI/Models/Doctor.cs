@@ -11,10 +11,12 @@ public class Doctor : BaseEntity
     public Office WorkingOffice { get; set; }
     public int? OfficeId { get; set; }
     public double ConsultingFee { get; set; }
+    public List<Appointment> Appointments { get; set; }
 
     public Doctor()
     {
         WorkingTimes = new List<string>();
         About = new List<string>();
+        Appointments = new List<Appointment>();  
     }
 }

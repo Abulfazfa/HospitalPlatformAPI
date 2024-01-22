@@ -39,7 +39,7 @@ public class OfficeService : IOfficeService
         }
         return list;
     }
-    public ReturnOfficeDto GetTestById(int id)
+    public ReturnOfficeDto GetOfficeById(int id)
     {
         var test = GetOffice(id);
         return _mapper.Map<ReturnOfficeDto>(test);
@@ -60,7 +60,7 @@ public class OfficeService : IOfficeService
         }
     }
 
-    public bool DeleteTest(int id)
+    public bool DeleteOffice(int id)
     {
         try
         {
@@ -75,21 +75,31 @@ public class OfficeService : IOfficeService
         }
     }
 
-    public bool UpdateTest(CreateOfficeDto createOfficeDto)
+    public bool UpdateOffice(CreateOfficeDto createOfficeDto)
     {
-        var office = _mapper.Map<Office>(createOfficeDto);
-
-        var existOffice = _unitOfWork.TestRepository.GetByIdAsync(office.Id).Result;
-
-        if (existOffice == null)
+        try
         {
-            return false;
+            var office = _mapper.Map<Office>(createOfficeDto);
+
+            var existOffice = _unitOfWork.OfficeRepository.GetByIdAsync(office.Id).Result;
+            if (existOffice == null)
+            {
+                return false;
+            }
+
+            existOffice = office;
+            
+            _unitOfWork.Commit();
+            return true;
+
+            
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
 
-        
-
-        _unitOfWork.Commit();
-        return true;
     }
 
     private Office GetOffice(int id)

@@ -21,7 +21,7 @@ public class DoctorService : IDoctorService
 
     public List<DoctorReturnDto> Get()
     {
-        var doctors = _unitOfWork.DoctorRepository.GetAllAsync().Result;
+        var doctors = _unitOfWork.DoctorRepository.Include(d => d.Branch).ToList();
         var list = new List<DoctorReturnDto>();
         foreach (var doctor in doctors)
         {
@@ -29,7 +29,11 @@ public class DoctorService : IDoctorService
         }
         return list;
     }
-
+    public DoctorReturnDto GetGroupById(int id)
+    {
+        var doctor = _unitOfWork.DoctorRepository.GetByIdAsync(id).Result;
+        return _mapper.Map<DoctorReturnDto>(doctor);
+    }
     public bool Add(DoctorCreateDto doctorCreateDto)
     {
         try
@@ -51,8 +55,8 @@ public class DoctorService : IDoctorService
     {
         try
         {
-            var group = Get(id);
-            var result = _unitOfWork.GroupRepository.DeleteAsync(group).GetAwaiter().GetResult;
+            var doctor = _unitOfWork.DoctorRepository.GetByIdAsync(id).Result;
+            var result = _unitOfWork.DoctorRepository.DeleteAsync(doctor).GetAwaiter().GetResult;
             _unitOfWork.Commit();
             return true;
         }
@@ -62,26 +66,20 @@ public class DoctorService : IDoctorService
         }
     }
 
-    public bool Update(GroupCreateDto groupCreateDto)
+    public bool Update(DoctorCreateDto createDto)
     {
-        var groupEntity = _mapper.Map<Group>(groupCreateDto);
+        var doctorEntity = _mapper.Map<Doctor>(createDto);
 
-        var existingGroup = _unitOfWork.GroupRepository.GetByIdAsync(groupEntity.Id).Result;
+        var existingDoctor = _unitOfWork.DoctorRepository.GetByIdAsync(doctorEntity.Id).Result;
 
-        if (existingGroup == null)
+        if (existingDoctor == null)
         {
             return false;
         }
 
-        existingGroup.Name = groupCreateDto.Name;
+        existingDoctor = doctorEntity;
         _unitOfWork.Commit();
         return true;
     }
-
-
-    private Group Get(int id)
-    {
-        return new Group();
-
-    }
+    
 }

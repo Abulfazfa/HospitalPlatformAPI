@@ -35,7 +35,7 @@ public class GroupService : IGroupService
         try
         {
             var group = _mapper.Map<Group>(groupCreateDto);
-            group.OfficeId = _unitOfWork.OfficeRepository.GetByPredicateAsync(o => o.Name == groupCreateDto.Name).Result.Id;
+            group.OfficeId = _unitOfWork.OfficeRepository.GetByPredicateAsync(o => o.Name == groupCreateDto.OfficeName).Result.Id;
             var result = _unitOfWork.GroupRepository.AddAsync(group).GetAwaiter().GetResult; 
             _unitOfWork.Commit();
             return true;
@@ -50,7 +50,7 @@ public class GroupService : IGroupService
     {
         try
         {
-            var group = GetGroup(id);
+            var group = _unitOfWork.GroupRepository.GetByIdAsync(id).Result;
             var result = _unitOfWork.GroupRepository.DeleteAsync(group).GetAwaiter().GetResult; 
             _unitOfWork.Commit();
             return true;
@@ -63,7 +63,7 @@ public class GroupService : IGroupService
 
     public GroupReturnDto GetGroupById(int id)
     {
-        var group = GetGroup(id);
+        var group = _unitOfWork.GroupRepository.GetByIdAsync(id).Result;
         return _mapper.Map<GroupReturnDto>(group);
     }
 
@@ -81,12 +81,5 @@ public class GroupService : IGroupService
         _unitOfWork.GroupRepository.UpdateAsync(groupEntity);      
         _unitOfWork.Commit();
         return true;
-    }
-
-
-    private Group GetGroup(int id)
-    {
-        return new Group();
-
     }
 }

@@ -8,6 +8,7 @@ public interface IUnitOfWork
     IGroupRepository GroupRepository { get; set; }
     ITestRepository TestRepository { get; set; }
     IAnalysisRepository AnalysisRepository { get; set; }
+    IAppointmentRepository AppointmentRepository { get; set; }
     IOfficeRepository OfficeRepository { get; set; }
     IDoctorRepository DoctorRepository { get; set; }
     IGenericRepository<AppUser> AppUserRepo { get; }

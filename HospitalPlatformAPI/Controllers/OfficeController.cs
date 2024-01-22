@@ -45,7 +45,7 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
-                _responseDto.Result = _officeService.GetTestById(id);
+                _responseDto.Result = _officeService.GetOfficeById(id);
             }
             catch (Exception ex)
             {
@@ -77,7 +77,7 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
-                _responseDto.Result = _officeService.DeleteTest(id);
+                _responseDto.Result = _officeService.DeleteOffice(id);
             }
             catch (Exception ex)
             {
@@ -93,7 +93,7 @@ namespace HospitalPlatformAPI.Controllers
         {
             try
             {
-                _responseDto.Result = _officeService.UpdateTest(groupCreateDto);
+                _responseDto.Result = _officeService.UpdateOffice(groupCreateDto);
             }
             catch (Exception ex)
             {
