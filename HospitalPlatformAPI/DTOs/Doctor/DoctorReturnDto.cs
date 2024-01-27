@@ -10,5 +10,6 @@
         public string PhoneNumber { get; set; }
         public string WorkingOfficeName { get; set; }
         public double ConsultingFee { get; set; }
+        public List<Models.Appointment> Appointments { get; set; }
     }
 }

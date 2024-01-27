@@ -86,7 +86,7 @@ namespace HospitalPlatformAPI.Controllers
 
         [Route("put")]
         [HttpPut]
-        public async Task<ResponseDto> Put(DoctorCreateDto doctorCreateDto)
+        public async Task<ResponseDto> Put(DoctorUpdateDto doctorCreateDto)
         {
             try
             {

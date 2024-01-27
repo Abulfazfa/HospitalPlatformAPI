@@ -58,7 +58,7 @@ namespace HospitalPlatformAPI.Migrations
 
                     b.HasIndex("AnalysisResultId");
 
-                    b.ToTable("Analyses");
+                    b.ToTable("Analyses", (string)null);
                 });
 
             modelBuilder.Entity("HospitalPlatformAPI.Models.AnalysisNameAndResultEntry", b =>
@@ -87,7 +87,7 @@ namespace HospitalPlatformAPI.Migrations
 
                     b.HasIndex("AnalysisResultId");
 
-                    b.ToTable("AnalysisNameAndResultEntries");
+                    b.ToTable("AnalysisNameAndResultEntries", (string)null);
                 });
 
             modelBuilder.Entity("HospitalPlatformAPI.Models.AnalysisResult", b =>
@@ -106,7 +106,7 @@ namespace HospitalPlatformAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AnalysisResults");
+                    b.ToTable("AnalysisResults", (string)null);
                 });
 
             modelBuilder.Entity("HospitalPlatformAPI.Models.AppUser", b =>
@@ -227,7 +227,7 @@ namespace HospitalPlatformAPI.Migrations
 
                     b.HasIndex("DoctorId");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointments", (string)null);
                 });
 
             modelBuilder.Entity("HospitalPlatformAPI.Models.Doctor", b =>
@@ -274,7 +274,7 @@ namespace HospitalPlatformAPI.Migrations
 
                     b.HasIndex("OfficeId");
 
-                    b.ToTable("Doctors");
+                    b.ToTable("Doctors", (string)null);
                 });
 
             modelBuilder.Entity("HospitalPlatformAPI.Models.Group", b =>
@@ -302,7 +302,7 @@ namespace HospitalPlatformAPI.Migrations
 
                     b.HasIndex("OfficeId");
 
-                    b.ToTable("Groups");
+                    b.ToTable("Groups", (string)null);
                 });
 
             modelBuilder.Entity("HospitalPlatformAPI.Models.Office", b =>
@@ -337,7 +337,7 @@ namespace HospitalPlatformAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Offices");
+                    b.ToTable("Offices", (string)null);
                 });
 
             modelBuilder.Entity("HospitalPlatformAPI.Models.Test", b =>
@@ -379,7 +379,7 @@ namespace HospitalPlatformAPI.Migrations
 
                     b.HasIndex("TestResultId");
 
-                    b.ToTable("Tests");
+                    b.ToTable("Tests", (string)null);
                 });
 
             modelBuilder.Entity("HospitalPlatformAPI.Models.TestNameAndResultEntry", b =>
@@ -405,7 +405,7 @@ namespace HospitalPlatformAPI.Migrations
 
                     b.HasIndex("TestResultId");
 
-                    b.ToTable("TestNameAndResultEntry");
+                    b.ToTable("TestNameAndResultEntry", (string)null);
                 });
 
             modelBuilder.Entity("HospitalPlatformAPI.Models.TestResult", b =>
@@ -430,7 +430,7 @@ namespace HospitalPlatformAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TestResult");
+                    b.ToTable("TestResult", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

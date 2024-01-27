@@ -37,16 +37,26 @@ public class AppointmentService : IAppointmentService
         try
         {
             var appointment = _mapper.Map<Appointment>(createAppointmentDto);
-           
-            var result = _unitOfWork.AppointmentRepository.AddAsync(appointment).GetAwaiter().GetResult;
+       
+            _unitOfWork.AppointmentRepository.AddAsync(appointment).GetAwaiter().GetResult();
+
+            var doctor = _unitOfWork.DoctorRepository.GetByIdAsync(createAppointmentDto.DoctorId).Result;
+
+            doctor.Appointments.Add(appointment);
+            _unitOfWork.DoctorRepository.UpdateAsync(doctor);
+
+            // Commit the changes
             _unitOfWork.Commit();
+
             return true;
         }
         catch (Exception e)
         {
+            // Handle exceptions appropriately
             return false;
         }
     }
+
 
     public bool Delete(int id)
     {

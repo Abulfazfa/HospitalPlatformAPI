@@ -10,5 +10,5 @@ public interface IDoctorService
     DoctorReturnDto GetGroupById(int id);
     bool Add(DoctorCreateDto doctorCreateDto); 
     bool Delete(int id);
-    bool Update(DoctorCreateDto createDto);
+    bool Update(DoctorUpdateDto createDto);
 }

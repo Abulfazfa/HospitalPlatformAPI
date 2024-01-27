@@ -5,6 +5,7 @@ using HospitalPlatformAPI.Models;
 using HospitalPlatformAPI.Repositories;
 using HospitalPlatformAPI.Repositories.Interfaces;
 using HospitalPlatformAPI.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalPlatformAPI.Services;
 
@@ -21,7 +22,8 @@ public class DoctorService : IDoctorService
 
     public List<DoctorReturnDto> Get()
     {
-        var doctors = _unitOfWork.DoctorRepository.Include(d => d.Branch).ToList();
+        var doctors = _unitOfWork.DoctorRepository.Include(d => d.Branch)
+            .Include(d => d.WorkingOffice).Include(d => d.Appointments).ToList();
         var list = new List<DoctorReturnDto>();
         foreach (var doctor in doctors)
         {
@@ -66,20 +68,26 @@ public class DoctorService : IDoctorService
         }
     }
 
-    public bool Update(DoctorCreateDto createDto)
+    public bool Update(DoctorUpdateDto updateDto)
     {
-        var doctorEntity = _mapper.Map<Doctor>(createDto);
-
-        var existingDoctor = _unitOfWork.DoctorRepository.GetByIdAsync(doctorEntity.Id).Result;
+        var existingDoctor = _unitOfWork.DoctorRepository.GetByIdAsync(updateDto.Id).Result;
 
         if (existingDoctor == null)
         {
             return false;
         }
 
-        existingDoctor = doctorEntity;
+        existingDoctor.Fullname = updateDto.FullName;
+        existingDoctor.About = updateDto.About;
+        existingDoctor.Branch = new Group { Name = updateDto.Branch }; // Assuming Group is a navigation property
+        existingDoctor.WorkingTimes = updateDto.WorkingTimes;
+        existingDoctor.PhoneNumber = updateDto.PhoneNumber;
+        existingDoctor.WorkingOffice = new Office { Name = updateDto.WorkingOfficeName }; // Assuming WorkingOffice is a navigation property
+        existingDoctor.ConsultingFee = updateDto.ConsultingFee;
+
         _unitOfWork.Commit();
         return true;
     }
+
     
 }
