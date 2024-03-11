@@ -59,7 +59,7 @@ public class AccountService : IAccountService
 
         UserDto userDTO = new()
         {
-            Email = user.Email,
+            //Email = user.Email,
             ID = user.Id,
             Name = user.UserName,
             PhoneNumber = user.PhoneNumber
@@ -93,7 +93,7 @@ public class AccountService : IAccountService
 
                 UserDto userDto = new()
                 {
-                    Email = userToReturn.Email,
+                    //Email = userToReturn.Email,
                     ID = userToReturn.Id,
                     Name = userToReturn.UserName,
                     PhoneNumber = userToReturn.PhoneNumber

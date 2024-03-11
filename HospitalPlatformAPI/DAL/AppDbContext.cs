@@ -17,7 +17,8 @@ public class AppDbContext : IdentityDbContext<AppUser>
      public DbSet<Doctor> Doctors { get; set; }
      public DbSet<Appointment> Appointments { get; set; }
      public DbSet<Office> Offices { get; set; }
-    // public DbSet<Category> Categories { get; set; }
+     public DbSet<Examination> Examinations { get; set; }
+     // public DbSet<Category> Categories { get; set; }
     // protected override void OnModelCreating(ModelBuilder modelBuilder)
     // {
     //     modelBuilder.ApplyConfiguration(new ProductConfiguration());

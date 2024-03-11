@@ -34,6 +34,7 @@ namespace HospitalPlatformAPI.Controllers
                 _responseDto.Message = ex.Message;
             }
             return _responseDto;
+            
         }
 
         [Route("get/{id}")]

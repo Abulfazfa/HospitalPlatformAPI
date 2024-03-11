@@ -12,6 +12,7 @@ public class Doctor : BaseEntity
     public int? OfficeId { get; set; }
     public double ConsultingFee { get; set; }
     public List<Appointment> Appointments { get; set; }
+    public string ImageUrl { get; set; }
 
     public Doctor()
     {

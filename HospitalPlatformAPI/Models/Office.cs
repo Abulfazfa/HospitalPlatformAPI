@@ -7,6 +7,7 @@ public class Office : BaseEntity
     public string Tel { get; set; }
     public List<string> WorkingTimes { get; set; }
     public List<Group> Groups { get; set; }
+    public string ImageUrl { get; set; }
 
     public Office()
     {

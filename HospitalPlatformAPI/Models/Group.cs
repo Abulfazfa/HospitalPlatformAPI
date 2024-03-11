@@ -6,6 +6,7 @@ public class Group : BaseEntity
     public List<Doctor> Doctors { get; set; }
     public int OfficeId { get; set; }
     public Office Office { get; set; }
+    public string ImageUrl { get; set; }
 
     public Group()
     {
