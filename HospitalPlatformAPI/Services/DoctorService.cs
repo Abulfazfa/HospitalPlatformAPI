@@ -33,7 +33,9 @@ public class DoctorService : IDoctorService
     }
     public DoctorReturnDto GetGroupById(int id)
     {
-        var doctor = _unitOfWork.DoctorRepository.GetByIdAsync(id).Result;
+        var doctor = _unitOfWork.DoctorRepository.Include(d => d.Branch)
+            .Include(d => d.WorkingOffice).Include(d => d.Appointments)
+            .FirstOrDefault(d =>d.Id == id);
         return _mapper.Map<DoctorReturnDto>(doctor);
     }
     public bool Add(DoctorCreateDto doctorCreateDto)

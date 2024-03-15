@@ -8,4 +8,5 @@ public class Appointment : BaseEntity
     public string Message { get; set; }
     public string Time { get; set; }
     public string ConsultingDate { get; set; }
+    public int DoctorId { get; set; }
 }
