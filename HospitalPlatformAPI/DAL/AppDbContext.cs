@@ -18,6 +18,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
      public DbSet<Appointment> Appointments { get; set; }
      public DbSet<Office> Offices { get; set; }
      public DbSet<Examination> Examinations { get; set; }
+     public DbSet<DoctorImage> DoctorImages { get; set; }
      // public DbSet<Category> Categories { get; set; }
     // protected override void OnModelCreating(ModelBuilder modelBuilder)
     // {

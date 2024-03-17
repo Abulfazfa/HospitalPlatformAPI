@@ -1,4 +1,6 @@
-﻿namespace HospitalPlatformAPI.DTOs.Doctor
+﻿using HospitalPlatformAPI.Models;
+
+namespace HospitalPlatformAPI.DTOs.Doctor
 {
     public class DoctorReturnDto
     {
@@ -11,5 +13,6 @@
         public string WorkingOfficeName { get; set; }
         public double ConsultingFee { get; set; }
         public List<Models.Appointment> Appointments { get; set; }
+        public DoctorImage? Image { get; set; }
     }
 }
