@@ -54,10 +54,12 @@ namespace HospitalPlatformAPI.Services;
         {
             Test test = new()
             {
-                AnalysisName = testCreateDto.Name,
+                AnalysisName = testCreateDto.AnalysisName,
                 RefDoctor = testCreateDto.RefDoctor
             };
             var analysis = _unitOfWork.AnalysisRepository.GetByPredicateAsync(a => a.Name == test.AnalysisName).Result;
+            var user = _unitOfWork.AppUserRepo.GetAllAsync().Result
+                .FirstOrDefault(a => a.FullName == testCreateDto.User);
             if (analysis != null)
             {
                 var analysisResult = _unitOfWork.AnalysisRepository.Include(a => a.AnalysisResult).Include(a => a.AnalysisResult.TestNameAndResultEntry)
@@ -73,9 +75,11 @@ namespace HospitalPlatformAPI.Services;
                     testResult.TestNameAndResultEntry.Add(testNameAndResultEntry);
                 }
                 test.TestResult = testResult;
+                user.Tests.Add(test);
             }
 
             _unitOfWork.TestRepository.AddAsync(test);
+            _unitOfWork.AppUserRepo.UpdateAsync(user);
             _unitOfWork.Commit();
             return true;
         }
@@ -112,7 +116,7 @@ namespace HospitalPlatformAPI.Services;
             return false;
         }
 
-        existingGroup.AnalysisName = testCreateDto.Name;
+        existingGroup.AnalysisName = testCreateDto.AnalysisName;
         existingGroup.RefDoctor = testCreateDto.RefDoctor;
         _unitOfWork.Commit();
         return true;

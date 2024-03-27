@@ -6,6 +6,7 @@ using HospitalPlatformAPI.Models;
 using HospitalPlatformAPI.Repositories.Interfaces;
 using HospitalPlatformAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using static HospitalPlatformAPI.Services.Interfaces.IJwtTokenGenerator;
 
 namespace HospitalPlatformAPI.Services;
@@ -117,6 +118,10 @@ public class AccountService : IAccountService
     public async Task<AppUser> GetUserByNameOrEmail(string userNameOrEmail)
     {
         return await _userManager.FindByNameAsync(userNameOrEmail) ?? await _userManager.FindByEmailAsync(userNameOrEmail);
+    }
+    public async Task<List<AppUser>> GetAllUsers()
+    {
+        return await _userManager.Users.ToListAsync();
     }
     
 }

@@ -19,15 +19,47 @@ namespace HospitalPlatformAPI.Controllers
     {
         private readonly IAccountService _authService;
         private readonly IConfiguration _configuration;
-        protected ResponseDto _response;
+        private readonly ResponseDto _responseDto;
+        
         public AccountController(IAccountService authService, IConfiguration configuration)
         {
             _authService = authService;
             _configuration = configuration;
-            _response = new();
+            _responseDto = new ResponseDto();
         }
 
+        [Route("get")]
+        [HttpGet]
+        public async Task<ResponseDto> Get()
+        {
+            try
+            {
+                _responseDto.Result = _authService.GetAllUsers();
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+            
+        }
 
+        [Route("GetUserByNameOrEmail")]
+        [HttpGet]
+        public async Task<ResponseDto> GetUserByNameOrEmail(string userNameOrEmail)
+        {
+            try
+            {
+                _responseDto.Result = _authService.GetUserByNameOrEmail(userNameOrEmail);
+            }
+            catch (Exception ex)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = ex.Message;
+            }
+            return _responseDto;
+        }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
@@ -36,11 +68,11 @@ namespace HospitalPlatformAPI.Controllers
             var errorMessage = await _authService.Register(model);
             if (!string.IsNullOrEmpty(errorMessage))
             {
-                _response.IsSuccess = false;
-                _response.Message = errorMessage;
-                return BadRequest(_response);
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = errorMessage;
+                return BadRequest(_responseDto);
             }
-            return Ok(_response);
+            return Ok(_responseDto);
         }
 
         [HttpPost("login")]
@@ -49,12 +81,12 @@ namespace HospitalPlatformAPI.Controllers
             var loginResponse = await _authService.Login(model);
             if (loginResponse.User == null)
             {
-                _response.IsSuccess = false;
-                _response.Message = "Username or password is incorrect";
-                return BadRequest(_response);
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = "Username or password is incorrect";
+                return BadRequest(_responseDto);
             }
-            _response.Result = loginResponse;
-            return Ok(_response);
+            _responseDto.Result = loginResponse;
+            return Ok(_responseDto);
 
         }
 
@@ -64,11 +96,11 @@ namespace HospitalPlatformAPI.Controllers
             var assignRoleSuccessful = await _authService.AssignRole(model.Email, model.Role.ToUpper());
             if (!assignRoleSuccessful)
             {
-                _response.IsSuccess = false;
-                _response.Message = "Error encountered";
-                return BadRequest(_response);
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = "Error encountered";
+                return BadRequest(_responseDto);
             }
-            return Ok(_response);
+            return Ok(_responseDto);
 
         }
 

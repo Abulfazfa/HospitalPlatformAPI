@@ -14,5 +14,6 @@ namespace HospitalPlatformAPI.DTOs.Doctor
         public double ConsultingFee { get; set; }
         public List<Models.Appointment> Appointments { get; set; }
         public DoctorImage? Image { get; set; }
+        public DateTime? CreateDate { get; set; }
     }
 }

@@ -17,9 +17,9 @@ public interface IAccountService
     //Task<LoginResult> Login(LoginRequestDto loginDto);
     //Task Logout();
     //Task<bool> GetRoleList(string userNameOrEmail);
-    //Task<AppUser> GetUserByNameOrEmail(string userNameOrEmail);
+    Task<AppUser> GetUserByNameOrEmail(string userNameOrEmail);
     //Task<string> GeneratePasswordResetToken(AppUser existUser);
-    //List<AppUser> GetAllUsers();
+    Task<List<AppUser>> GetAllUsers();
     Task<string> Register(RegisterDto registrationRequestDto);
     Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto);
     Task<bool> AssignRole(string email, string roleName);
